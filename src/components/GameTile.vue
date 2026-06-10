@@ -1,42 +1,54 @@
 <template>
-    <div
-        v-if="color"
-        class="az-tile"
-        :class="{
-            'az-tile--normal': scale === 1,
-            'az-tile--small': scale === 0.5
-        }"
-        :style="{
-            width: `${tile * scale}px`,
-            height: `${tile * scale}px`,
-            backgroundColor: color
-        }"
-    />
+	<div
+		v-if="tile"
+		class="az-tile"
+		:class="[
+			`az-tile--${tile}`,
+			{
+				'az-tile--normal': scale === 1,
+				'az-tile--small': scale === 0.5
+			}
+		]"
+		:style="{
+			width: `${size * scale}px`,
+			height: `${size * scale}px`
+		}"
+	/>
 </template>
 
 <script lang="ts" setup>
+import type { Tile } from '@/types/blocks'
+
 defineProps<{
-    color: string | ''
-    tile: number
-    scale: number
+	scale: number
+	size: number
+	tile: Tile
 }>()
 </script>
 
 <style lang="scss" scoped>
 .az-tile {
-    box-sizing: border-box;
-    border-style: solid;
-    border-left-color: #FFFFFF66;
-    border-top-color: #FFFFFF66;
-    border-right-color: #00000040;
-    border-bottom-color: #00000040;
+	border-style: solid;
+	border-color: rgba(#FFFFFF, 0.4) rgba(#000000, 0.25) rgba(#000000, 0.25) rgba(#FFFFFF, 0.4);
 
-    &--normal {
-        border-width: 10px;
-    }
+	&--mint {
+		background: $color-mint-200;
+	}
 
-    &--small {
-        border-width: 5px;
-    }
+	&--rose {
+		background: $color-rose-200;
+	}
+
+	&--navy {
+		background: $color-navy-200;
+	}
+
+	&--normal {
+		border-width: 10px;
+	}
+
+	&--small {
+		border-width: 5px;
+	}
 }
 </style>

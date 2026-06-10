@@ -1,24 +1,26 @@
 # Vue.js Blocks Game
 
-## Screenshot
+## Screenshots
 
-![Vue.js Blocks Game](https://raw.githubusercontent.com/annaziarkiewicz/vue-blocks-game/refs/heads/main/screenshot.png)
+![Vue.js Blocks welcome screen](https://raw.githubusercontent.com/annaziarkiewicz/vue-blocks-game/refs/heads/main/screenshot-1.png)
+![Vue.js Blocks game screenshot](https://raw.githubusercontent.com/annaziarkiewicz/vue-blocks-game/refs/heads/main/screenshot-2.png)
 
 
 ## Required environment
 
-`node 20` and `npm 10+`
+`node 20+` and `npm 10+`
 
 
 ## Required open ports in environment
 
-- `5173` – used for running the Vue.js application in development mode (Vite)
-- `4173` – used for previewing the production build (Vite)
+- `5173` – development server (Vite)  
+- `4173` – preview production build (Vite) 
 
 
 ## How to start environment
 
-1. `npm install` - install dependencies
-2. `npm run dev` - for developing the Vue application
-3. `npm run build`- for building Vue application
-4. `npm run preview` – preview production build locally
+1. `npm install` - install dependencies  
+2. `npm run dev` - run development server  
+3. `npm run lint` - lint the codebase  
+4. `npm run build` - build the application  
+5. `npm run preview` - preview production build locally 

@@ -1,167 +1,144 @@
 <template>
-    <div class="az-game-screen">
-        <div class="az-game-screen__box">
-            <template v-if="screen === 'intro'">
-                <div class="az-game-screen__heading">
-                    Vue.js Blocks
-                </div>
-                <div class="az-game-screen__subtitle">
-                    This is a classic block puzzle game where you place differently shaped blocks onto a grid to clear full rows and columns, and aim for the highest score by planning several moves ahead.
-                </div>
-            </template>
+    <section class="az-screen">
+        <div v-if="$slots.illustrations" class="az-screen__illustrations">
+            <slot name="illustrations" />
+        </div>
 
-            <template v-else>
-                <div class="az-game-screen__heading">
-                    Your score
-                </div>
-                <div class="az-game-screen__subtitle">
-                    {{ score }} points
-                </div>
-            </template>
+        <div class="az-screen__content">
+            <div v-if="gameHeadline" class="az-screen__heading">
+                {{ gameHeadline }}
+            </div>
 
-            <div class="az-game-screen__action">
+            <div v-if="hasAnyActions" class="az-screen__actions">
                 <button
-                    class="az-game-screen__button"
-                    :class="buttonClass"
-                    @click="emitStart"
+                    v-if="buttonPlayGame"
+                    class="az-screen__button az-screen__button--mint"
+                    @click="emit('play-game')"
                 >
-                    {{ screen === 'intro' ? 'Start' : 'Restart' }}
+                    Play game
+                </button>
+
+                <button
+                    v-if="buttonBackToGame"
+                    class="az-screen__button az-screen__button--mint"
+                    @click="emit('back-to-game')"
+                >
+                    Back to game
+                </button>
+
+                <button
+                    v-if="buttonHighScores"
+                    class="az-screen__button az-screen__button--rose"
+                    @click="emit('show-high-scores')"
+                >
+                    High scores
+                </button>
+
+                <button
+                    v-if="buttonHowToPlay"
+                    class="az-screen__button az-screen__button--navy"
+                    @click="emit('show-how-to-play')"
+                >
+                    How to play
                 </button>
             </div>
         </div>
-    </div>
+
+        <GameScreenAuthor/>
+
+        <slot/>
+    </section>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import GameScreenAuthor from '@/components/GameScreenAuthor.vue'
+
 const props = defineProps<{
-    screen: 'intro' | 'gameover'
-    score: number
+    gameHeadline: string,
+    buttonPlayGame?: boolean,
+    buttonBackToGame?: boolean,
+    buttonHighScores?: boolean,
+    buttonHowToPlay?: boolean,
 }>()
 
 const emit = defineEmits<{
-    (e: 'start'): void
+    (e: 'play-game'): void
+    (e: 'back-to-game'): void
+    (e: 'show-high-scores'): void
+    (e: 'show-how-to-play'): void
 }>()
 
-const emitStart = () => emit('start')
-
-const buttonClass = computed(() =>
-    props.screen === 'intro'
-        ? 'az-game-screen__button--mint'
-        : 'az-game-screen__button--rose'
-)
+const hasAnyActions = computed(() => props.buttonPlayGame || props.buttonBackToGame || props.buttonHighScores || props.buttonHowToPlay)
 </script>
 
 <style lang="scss" scoped>
-.az-game-screen {
+.az-screen {
     position: absolute;
     inset: 0;
-    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding-top: 68px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    background: #AFAFA880;
+    justify-content: center;
+    background: $color-milk-200;
 
-    &:after {
-        content: '';
+    &__illustrations {
         position: absolute;
-        bottom: 36px;
-        left: -178px;
-        width: 337px;
-        height: 225px;
-        rotate: -25deg;
-        transform: scale(0.85);
-        pointer-events: none;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-image: url('@/assets/rose.png');
-
-        @media (max-width: 960px) {
-            display: none;
-        }
+        inset: 0;
+        width: 100%;
+        height: 100%;
     }
 
-    &__box {
+    &__content {
         position: relative;
-        width: 480px;
-        height: 280px;
-        padding: 0 84px;
-        margin-top: 24px;
+        width: 100%;
+        padding: 0 48px 96px;
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
         align-items: center;
         justify-content: center;
-        gap: 12px;
-        background: $color-milk-200;
-        box-shadow: 0 0 24px $color-milk-300;
-        border-radius: 24px;
-
-        &:before,
-        &:after {
-            content: '';
-            position: absolute;
-            pointer-events: none;
-            transform: scale(0.85);
-            background-repeat: no-repeat;
-            background-size: contain;
-            
-            @media (max-width: 960px) {
-                display: none;
-            }
-        }
-
-        &:before {
-            top: -154px;
-            left: -214px;
-            width: 337px;
-            height: 225px;
-            rotate: 25deg;
-            background-image: url('@/assets/navy.png');
-        }
-
-        &:after {
-            bottom: 22px;
-            right: -218px;
-            width: 337px;
-            height: 338px;
-            rotate: -15deg;
-            background-image: url('@/assets/mint.png');
-        }
+        gap: 48px;
     }
 
     &__heading {
-        font-size: 32px;
+        font-size: 64px;
         font-weight: 700;
-        line-height: 1;
-        color: $color-milk-500;
+        line-height: 1em;
+        color: $color-grey-300;
+        text-transform: uppercase;
         text-align: center;
     }
 
-    &__subtitle {
-        margin: 0 -36px;
-        font-size: 13px;
-        font-weight: 200;
-        line-height: 1.25rem;
-        color: $color-grey-400;
-        text-align: center;
-    }
-
-    &__action {
+    &__actions {
         width: 100%;
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 12px;
     }
 
     &__button {
-        width: 100%;
-        padding: 16px;
+        width: 320px;
+        padding: 20px 28px;
         border-radius: 12px;
         font-size: 18px;
         font-weight: 500;
+        line-height: 1em;
         text-transform: uppercase;
         transition: 0.5s;
+
+        &--mint {
+            background: $color-mint-400;
+
+            &:hover {
+                background: $color-mint-500;
+            }
+        }
 
         &--rose {
             background: $color-rose-200;
@@ -171,11 +148,11 @@ const buttonClass = computed(() =>
             }
         }
 
-        &--mint {
-            background: $color-mint-300;
+        &--navy {
+            background: $color-navy-200;
 
             &:hover {
-                background: $color-mint-400;
+                background: $color-navy-300;
             }
         }
     }
