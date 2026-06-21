@@ -67,11 +67,11 @@
 			@show-high-scores="showHighScores"
 			@show-how-to-play="showHowToPlay"
 		>
-			<slot name="illustrations">
+			<template #illustrations>
 				<div class="az-illustration az-illustration--mint" />
 				<div class="az-illustration az-illustration--rose" />
 				<div class="az-illustration az-illustration--navy" />
-			</slot>
+            </template>
 
 			<GameScreenHighScores
 				v-if="gameState.screen === 'highScores'"
